@@ -3,11 +3,10 @@ const app = express();
 const connectMongo = require('./config/configMongo');
 const userRoute = require('./routes/userRoute');
 const url = "mongodb://localhost:27017/firstProject"
-const bodyParser = require('body-parser');
 const blogRoute = require('./routes/blogRoute');
 
-app.use(express.json())
-app.use(bodyParser.json())
+
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 

@@ -12,6 +12,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    token: {
+        type: String,
+    },
     jobTitle: {
         type: String,
     },
@@ -23,9 +26,6 @@ const userSchema = mongoose.Schema({
         default:0,
         min: 0,
         max: 1
-    },
-    token: {
-        type: String,
     },
 });
 

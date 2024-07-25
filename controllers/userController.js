@@ -9,7 +9,7 @@ const registerUser = async (req, res) => {
         username: username,
         password: password,
         jobTitle: jobTitle,
-        monile: mobile,
+        mobile: mobile,
         status: status,
     })
 
@@ -26,44 +26,48 @@ const getAllusers = async (req, res) => {
 
 //login
 const login = async (req, res) => {
+
+   // data coming from frontend
     const { username, password } = req.body;
+
+    //validations
     if (!username) {
-        res.send({ aysuhi: "002", message: "Username can not be null" })
+        res.send({ status: "002", message: "Username can not be null" })
     }
 
     if (!password) {
-        return res.send({ aysuhi: "002", message: "Password can not be null" })
+        return res.send({ status: "002", message: "Password can not be null" })
     }
 
+    //check the username exist in the database or not
     const query = await User.findOne({ username: username })
 
+   // if user doesnot exist in the DB
     if (!query) {
-        return res.send({ aysuhi: "002", message: "Username doesnot exist" })
+        return res.send({ status: "002", message: "Username doesnot exist" })
     }
 
+    //if passwords do not match
     if (query.password !== password) {
         return res.send({ status: "002", message: "Incorrect password" })
     }
 
+    //if passwords match
     const payload = {
         id: query._id,
         username: query.username
     }
 
 
-    //token generate
+    //1. token generate
     var token = jwt.sign(payload, privateKey);
 
-    const dbusername = query.username;
-
+    
     //update in database
-    await User.updateOne({ dbusername: username }, { token: token })
+    await User.updateOne({ username: username }, { token: token })
 
     //to send token to frontend
-
     res.send({ staus: "001", message: "Login successful", token })
-
-
 
 }
 
